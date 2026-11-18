@@ -10,7 +10,7 @@ pub trait WordGenerator {
 
 pub enum GenerationError {
     WordTooLong,
-    InvalidNonTerminal,
+    InvalidNonterminal,
 }
 
 /**
@@ -44,11 +44,11 @@ impl<'grammar, G: Grammar> WordGenerator for RandomWordGenerator<'grammar, G> {
                     println!("  → Terminal {} added to word.", character);
                 }
 
-                non_terminal => {
-                    let productions = match self.grammar.productions(non_terminal) {
+                nonterminal => {
+                    let productions = match self.grammar.productions(nonterminal) {
                         Ok(productions) => productions,
                         Err(GrammarError::InvalidSymbol) => {
-                            return Err(GenerationError::InvalidNonTerminal);
+                            return Err(GenerationError::InvalidNonterminal);
                         }
                     };
 

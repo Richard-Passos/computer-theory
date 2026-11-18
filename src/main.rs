@@ -24,9 +24,9 @@ fn main() {
             Err(GenerationError::WordTooLong) => {
                 eprintln!("  → This generation attempt exceeded {MAX_SIZE} characters.");
             }
-            Err(GenerationError::InvalidNonTerminal) => {
+            Err(GenerationError::InvalidNonterminal) => {
                 eprintln!(
-                    "  → The grammar contains an invalid non terminal. A developer must fix it."
+                    "  → The grammar contains an invalid nonterminal. A developer must fix it."
                 );
             }
         };

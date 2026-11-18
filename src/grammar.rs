@@ -31,10 +31,10 @@ impl DMCGrammar {
             Production::new(vec![Symbol::Terminal('p'), INIT_SYMBOL]),
             Production::new(vec![
                 Symbol::Terminal('l'),
-                Symbol::NonTerminal('A'),
+                Symbol::Nonterminal('A'),
                 INIT_SYMBOL,
             ]),
-            Production::new(vec![Symbol::Terminal('l'), Symbol::NonTerminal('A')]),
+            Production::new(vec![Symbol::Terminal('l'), Symbol::Nonterminal('A')]),
             Production::new(vec![
                 Symbol::Terminal('a'),
                 Symbol::Terminal('a'),
@@ -56,8 +56,8 @@ impl DMCGrammar {
             Production::new(attack_symbols),
             Production::new(vec![
                 Symbol::Terminal('l'),
-                Symbol::NonTerminal('A'),
-                Symbol::NonTerminal('A'),
+                Symbol::Nonterminal('A'),
+                Symbol::Nonterminal('A'),
             ]),
         ]
     }
@@ -67,10 +67,10 @@ impl Grammar for DMCGrammar {
     fn productions(&self, symbol: Symbol) -> Result<Vec<Production>, GrammarError> {
         match symbol {
             INIT_SYMBOL => Ok(self.ground_productions()),
-            Symbol::NonTerminal('A') => Ok(self.aerial_productions(Some(Symbol::NonTerminal('B')))),
-            Symbol::NonTerminal('B') => Ok(self.aerial_productions(Some(Symbol::NonTerminal('C')))),
-            Symbol::NonTerminal('C') => Ok(self.aerial_productions(Some(Symbol::NonTerminal('D')))),
-            Symbol::NonTerminal('D') => Ok(self.aerial_productions(None)),
+            Symbol::Nonterminal('A') => Ok(self.aerial_productions(Some(Symbol::Nonterminal('B')))),
+            Symbol::Nonterminal('B') => Ok(self.aerial_productions(Some(Symbol::Nonterminal('C')))),
+            Symbol::Nonterminal('C') => Ok(self.aerial_productions(Some(Symbol::Nonterminal('D')))),
+            Symbol::Nonterminal('D') => Ok(self.aerial_productions(None)),
             _ => Err(GrammarError::InvalidSymbol),
         }
     }

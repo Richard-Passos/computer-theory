@@ -1,7 +1,6 @@
 mod generator;
 mod grammar;
 mod production;
-mod recognizer;
 mod symbol;
 mod word;
 
@@ -9,11 +8,9 @@ use std::io;
 
 use crate::generator::{GenerationError, MAX_SIZE, RandomWordGenerator, WordGenerator};
 use crate::grammar::DMCGrammar;
-use crate::recognizer::{Recognizer, WordRecognizer};
 
 fn main() {
     let grammar = DMCGrammar::new();
-    let recognizer = WordRecognizer::new(&grammar);
     let generator = RandomWordGenerator::new(&grammar);
 
     let mut tries = get_tries();
@@ -21,12 +18,6 @@ fn main() {
         match generator.generate() {
             Ok(word) => {
                 print!("Generated word: {} -- ", word.content());
-
-                if recognizer.recognize(&word) {
-                    println!("Valid word!")
-                } else {
-                    println!("Invalid word!")
-                }
             }
             Err(GenerationError::WordTooLong) => {
                 eprintln!("This generation attempt exceeded {MAX_SIZE} characters.");

@@ -1,18 +1,10 @@
 pub struct Word {
-    size: usize,
     content: String,
 }
 
 impl Word {
     pub fn new(content: String) -> Self {
-        return Word {
-            size: content.len(),
-            content,
-        };
-    }
-
-    pub fn size(&self) -> usize {
-        return self.size;
+        return Word { content };
     }
 
     pub fn content(&self) -> &str {

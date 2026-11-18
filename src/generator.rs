@@ -39,6 +39,9 @@ impl<'grammar, G: Grammar> WordGenerator for RandomWordGenerator<'grammar, G> {
                     }
 
                     content.push(character);
+
+                    /* Print required by the teacher */
+                    println!("  → Terminal {} added to word.", character);
                 }
 
                 non_terminal => {

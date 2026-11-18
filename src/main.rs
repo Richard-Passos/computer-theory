@@ -1,3 +1,4 @@
+mod dmc_grammar;
 mod generator;
 mod grammar;
 mod production;
@@ -6,8 +7,8 @@ mod word;
 
 use std::io::{self, Write};
 
+use crate::dmc_grammar::DMCGrammar;
 use crate::generator::{GenerationError, MAX_SIZE, RandomWordGenerator, WordGenerator};
-use crate::grammar::DMCGrammar;
 
 fn main() {
     let grammar = DMCGrammar::new();
@@ -24,10 +25,11 @@ fn main() {
             Err(GenerationError::WordTooLong) => {
                 eprintln!("  → This generation attempt exceeded {MAX_SIZE} characters.");
             }
+            Err(GenerationError::InvalidTerminal) => {
+                eprintln!("  → The word contains an invalid terminal. A developer must fix it.")
+            }
             Err(GenerationError::InvalidNonterminal) => {
-                eprintln!(
-                    "  → The grammar contains an invalid nonterminal. A developer must fix it."
-                );
+                eprintln!("  → The word contains an invalid nonterminal. A developer must fix it.");
             }
         };
 

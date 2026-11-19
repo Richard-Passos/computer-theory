@@ -33,7 +33,7 @@
 
 <img
     role='presentation'
-    src='public/demo.mp4'
+    src='public/demo.gif'
 />
 
 <img
@@ -46,7 +46,7 @@
 </summary>
 
 <p>
-    Think of a combo as a list of moves that the generator fills in one step at a time. A <b>terminal</b> is a move that has already been chosen, such as <code>r</code> for a roll. A <b>nonterminal</b> is a placeholder for part of the combo that still needs to be generated.
+    Think of a combo as a list of moves that the generator fills in one step at a time. A <code>terminal</code> is a move that has already been chosen, such as <code>r</code> for a roll. A <code>nonterminal</code> is a placeholder for part of the combo that still needs to be generated.
 </p>
 
 ```text
@@ -70,12 +70,12 @@ D → e | a  | lAA
     <tbody>
         <tr>
             <td><code>a</code></td>
-            <td>Basic attack</td>
+            <td>Attack</td>
             <td>Dante strikes the opponent. One uninterrupted streak of four or more aerial attacks lowers him by exactly one level, even if he lands eight hits in a row.</td>
         </tr>
         <tr>
             <td><code>e</code></td>
-            <td>Finishing thrust</td>
+            <td>Thrust</td>
             <td>In the air, Dante descends one level. On the ground, he ends the combo.</td>
         </tr>
         <tr>
@@ -112,18 +112,22 @@ D → e | a  | lAA
         </tr>
         <tr>
             <td><code>A</code></td>
+            <td>Air with one attack</td>
             <td>Begin a one-level descent. Dante can descend immediately with e or start a four-hit streak with a.</td>
         </tr>
         <tr>
             <td><code>B</code></td>
+            <td>Air with two attacks</td>
             <td>Continue the descent after one hit. Three more consecutive hits will lower Dante one level.</td>
         </tr>
         <tr>
             <td><code>C</code></td>
+            <td>Air with three attacks</td>
             <td>Continue the descent after two hits. Two more consecutive hits will lower Dante one level.</td>
         </tr>
         <tr>
             <td><code>D</code></td>
+            <td>Air with four attacks</td>
             <td>Complete the descent with one more a, the fourth hit in the streak.</td>
         </tr>
     </tbody>
@@ -144,6 +148,8 @@ D → e | a  | lAA
 
 ```text
 ├── src/
+│   ├── dmc_grammar/...
+│   ├── random_generator/...
 │   ├── generator.rs
 │   ├── grammar.rs
 │   ├── main.rs
@@ -155,10 +161,16 @@ D → e | a  | lAA
 
 <ul>
     <li>
-        <a href='src/generator.rs'><code>generator.rs</code></a>: Defines the word generator trait and its implementations.
+        <a href='src/dmv_grammar'><code>dmc_grammar/...</code></a>: Implements the Devil May Cry inspired grammar using the grammar trait.
     </li>
     <li>
-        <a href='src/grammar.rs'><code>grammar.rs</code></a>: Defines the grammar trait and its implementations.
+        <a href='src/random_generator'><code>random_generator/...</code></a>: Implements the Random Word Generator using the generator trait.
+    </li>
+    <li>
+        <a href='src/generator.rs'><code>generator.rs</code></a>: Defines the word generator trait.
+    </li>
+    <li>
+        <a href='src/grammar.rs'><code>grammar.rs</code></a>: Defines the grammar trait.
     </li>
     <li>
         <a href='src/main.rs'><code>main.rs</code></a>: Sets up the grammar and generator, runs the requested number of attempts, and prints the results.

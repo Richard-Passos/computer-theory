@@ -42,6 +42,54 @@
 />
 
 <summary>
+    <h2>🚀 How to Run</h2>
+</summary>
+
+<h3>Download a release</h3>
+
+<p>
+    Open the <a href='/releases'></a><code>Releases page</code></a>, expand <code>Assets</code>, and download the file for your platform.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Plataform</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>Windows (x64)</code></td>
+            <td>Download the <code>.exe</code> file and run it from PowerShell.</td>
+        </tr>
+        <tr>
+            <td><code>Linux (x64)</code></td>
+            <td>Download the <code>linux-x64</code> archive and extract it.</td>
+        </tr>
+        <tr>
+            <td><code>macOS</code></td>
+            <td>Download the <code>macos-apple-silicon</code> or <code>macos-intel</code> archive for your Mac and extract it.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Run from source</h3>
+
+<p>
+    With Rust and Cargo installed, open a terminal in the folder containing <code>Cargo.toml</code> and run:
+</p>
+
+```sh
+cargo run
+```
+
+<img
+    role='presentation'
+    src='https://raw.githubusercontent.com/Richard-Passos/readme-kit/9b17b6fa2fb567f76880adbfff92670166776c99/assets/dividers/cyber_badge.svg'
+/>
+
+<summary>
     <h2>📐 Grammar</h2>
 </summary>
 

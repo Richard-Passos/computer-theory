@@ -15,32 +15,52 @@ use crate::random_generator::RandomWordGenerator;
 fn main() {
     let generator = RandomWordGenerator::new(DMCGrammar::new);
 
-    let tries = get_tries();
-    for i in 1..=tries {
-        println!("Try number {i:02}:");
+    loop {
+        let tries = get_tries();
+        for i in 1..=tries {
+            println!("Try number {i:02}:");
 
-        match generator.generate() {
-            Ok(word) => {
-                println!("  → Generated word: {word}");
-            }
-            Err(GenerationError::WordTooLong(size)) => {
-                eprintln!("  → This generation attempt exceeded {size} characters.");
-            }
-            Err(GenerationError::InvalidTerminal(id)) => {
-                eprintln!("  → Invalid terminal '{id}'. A developer must fix it.")
-            }
-            Err(GenerationError::InvalidNonterminal(id)) => {
-                eprintln!("  → Invalid nonterminal '{id}'. A developer must fix it.");
-            }
-        };
+            match generator.generate() {
+                Ok(word) => {
+                    println!("  → Generated word: {word}");
+                }
+                Err(GenerationError::WordTooLong(size)) => {
+                    eprintln!("  → This generation attempt exceeded {size} characters.");
+                }
+                Err(GenerationError::InvalidTerminal(id)) => {
+                    eprintln!("  → Invalid terminal '{id}'. A developer must fix it.")
+                }
+                Err(GenerationError::InvalidNonterminal(id)) => {
+                    eprintln!("  → Invalid nonterminal '{id}'. A developer must fix it.");
+                }
+            };
+
+            println!();
+        }
+
+        if !should_repeat() {
+            break;
+        }
 
         println!();
     }
 }
 
+fn should_repeat() -> bool {
+    loop {
+        let answer = input("Run again? (y/n): ");
+
+        match answer.trim() {
+            "y" | "Y" => return true,
+            "n" | "N" => return false,
+            _ => eprintln!("  → Please enter y or n.\n"),
+        }
+    }
+}
+
 fn get_tries() -> usize {
     return loop {
-        let input = input("Enter the number of tries to generate the word: ");
+        let input = input("Enter the number of tries to generate a word: ");
 
         match input.trim().parse::<usize>() {
             Ok(tries) => break tries,

@@ -1,5 +1,6 @@
 use crate::symbol::Symbol;
 
+#[derive(Clone)]
 pub struct Production {
     symbols: Vec<Symbol>,
 }

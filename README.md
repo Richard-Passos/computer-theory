@@ -150,7 +150,8 @@ D → e | a  | lAA
     <thead>
         <tr>
             <th>Symbol</th>
-            <th>Role in the grammar</th>
+            <th>State</th>
+            <th>Purpose</th>
         </tr>
     </thead>
     <tbody>

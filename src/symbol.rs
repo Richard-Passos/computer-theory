@@ -1,7 +1,25 @@
-pub const INIT_SYMBOL: Symbol = Symbol::NonTerminal('S');
+pub const INIT_SYMBOL: Nonterminal = Nonterminal('S');
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy)]
 pub enum Symbol {
-    Terminal(char),
-    NonTerminal(char),
+    Terminal(Terminal),
+    Nonterminal(Nonterminal),
+}
+
+#[derive(Clone, Copy, PartialEq)]
+pub struct Terminal(pub char);
+
+#[derive(Clone, Copy, PartialEq)]
+pub struct Nonterminal(pub char);
+
+impl Terminal {
+    pub const fn id(&self) -> char {
+        return self.0;
+    }
+}
+
+impl Nonterminal {
+    pub const fn id(&self) -> char {
+        return self.0;
+    }
 }

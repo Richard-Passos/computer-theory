@@ -156,6 +156,7 @@ D → e | a  | lAA
     <tbody>
         <tr>
             <td><code>S</code></td>
+            <td>Ground</td>
             <td>The start symbol. It generates a combo beginning on the ground.</td>
         </tr>
         <tr>

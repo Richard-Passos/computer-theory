@@ -48,7 +48,7 @@
 <h3>Download a release</h3>
 
 <p>
-    Open the <a href='https://github.com/Richard-Passos/computer-theory/releases/tag/v1.0.0'><code>Releases page</code></a>, expand <code>Assets</code>, and download the file for your platform.
+    Open the <a href='https://github.com/Richard-Passos/computer-theory/releases'><code>Releases page</code></a>, expand <code>Assets</code>, and download the file for your platform.
 </p>
 
 <table>

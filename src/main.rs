@@ -11,8 +11,7 @@ use crate::dmc_grammar::DMCGrammar;
 use crate::generator::{GenerationError, MAX_SIZE, RandomWordGenerator, WordGenerator};
 
 fn main() {
-    let grammar = DMCGrammar::new();
-    let generator = RandomWordGenerator::new(&grammar);
+    let generator = RandomWordGenerator::new(DMCGrammar::new);
 
     let tries = get_tries();
     for i in 1..=tries {

@@ -1,11 +1,16 @@
 use crate::production::Production;
-use crate::symbol::Symbol;
+use crate::symbol::{Nonterminal, Terminal};
 
 pub trait Grammar {
-    fn semantic(&self, symbol: Symbol) -> Result<String, GrammarError>;
-    fn productions(&self, symbol: Symbol) -> Result<Vec<Production>, GrammarError>;
+    fn handle(&self, terminal: Terminal) -> Result<Self, InvalidTerminal>
+    where
+        Self: Sized;
+    fn semantic(&self, terminal: Terminal) -> Result<String, InvalidTerminal>;
+    fn productions(&self, nonterminal: Nonterminal) -> Result<Vec<Production>, InvalidNonterminal>;
 }
 
-pub enum GrammarError {
-    InvalidSymbol,
-}
+#[derive(Debug)]
+pub struct InvalidTerminal;
+
+#[derive(Debug)]
+pub struct InvalidNonterminal;

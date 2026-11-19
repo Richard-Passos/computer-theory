@@ -1,5 +1,5 @@
-use crate::grammar::{Grammar, GrammarError};
-use crate::symbol::{INIT_SYMBOL, Symbol};
+use crate::grammar::{Grammar, InvalidNonterminal, InvalidTerminal};
+use crate::symbol::{INIT_SYMBOL, Nonterminal, Symbol, Terminal};
 use crate::word::Word;
 
 pub const MAX_SIZE: usize = 99;
@@ -17,55 +17,83 @@ pub enum GenerationError {
 /**
  *  Generates a random word for a specified grammar.
  */
-pub struct RandomWordGenerator<'grammar, G: Grammar> {
-    grammar: &'grammar G,
+pub struct RandomWordGenerator<G: Grammar> {
+    create_grammar: fn() -> G,
 }
 
-impl<'grammar, G: Grammar> RandomWordGenerator<'grammar, G> {
-    pub fn new(grammar: &'grammar G) -> Self {
-        return RandomWordGenerator { grammar };
+impl<G: Grammar> RandomWordGenerator<G> {
+    pub fn new(create_grammar: fn() -> G) -> Self {
+        return RandomWordGenerator { create_grammar };
     }
 }
 
-impl<'grammar, G: Grammar> WordGenerator for RandomWordGenerator<'grammar, G> {
+impl<G: Grammar> RandomWordGenerator<G> {
+    fn handle_terminal(
+        &self,
+        mut grammar: G,
+        terminal: Terminal,
+        mut content: String,
+    ) -> Result<(G, String), GenerationError> {
+        if content.len() >= MAX_SIZE {
+            return Err(GenerationError::WordTooLong);
+        }
+
+        grammar = match grammar.handle(terminal) {
+            Ok(grammar) => grammar,
+            Err(_) => {
+                return Err(GenerationError::InvalidTerminal);
+            }
+        };
+
+        match grammar.semantic(terminal) {
+            Ok(semantic) => println!("  → {}: {}", terminal.id(), semantic),
+            Err(InvalidTerminal) => {
+                return Err(GenerationError::InvalidTerminal);
+            }
+        };
+
+        content.push(terminal.id());
+        return Ok((grammar, content));
+    }
+
+    fn handle_nonterminal(
+        &self,
+        grammar: G,
+        nonterminal: Nonterminal,
+        mut pending_symbols: Vec<Symbol>,
+    ) -> Result<(G, Vec<Symbol>), GenerationError> {
+        let productions = match grammar.productions(nonterminal) {
+            Ok(productions) => productions,
+            Err(InvalidNonterminal) => {
+                return Err(GenerationError::InvalidNonterminal);
+            }
+        };
+
+        let selected_index = rand::random_range(0..productions.len());
+        let selected_production = &productions[selected_index];
+
+        for next_symbol in selected_production.symbols().iter().rev() {
+            pending_symbols.push(*next_symbol);
+        }
+
+        return Ok((grammar, pending_symbols));
+    }
+}
+
+impl<G: Grammar> WordGenerator for RandomWordGenerator<G> {
     fn generate(&self) -> Result<Word, GenerationError> {
         let mut content = String::new();
-        let mut pending_symbols = vec![INIT_SYMBOL];
+        let mut grammar = (self.create_grammar)();
+        let mut pending_symbols = vec![Symbol::Nonterminal(INIT_SYMBOL)];
 
         while let Some(symbol) = pending_symbols.pop() {
             match symbol {
-                Symbol::Terminal(id) => {
-                    let terminal = Symbol::Terminal(id);
-
-                    if content.len() >= MAX_SIZE {
-                        return Err(GenerationError::WordTooLong);
-                    }
-
-                    match self.grammar.semantic(terminal) {
-                        Ok(semantic) => println!("  → {}: {}", id, semantic),
-                        Err(GrammarError::InvalidSymbol) => {
-                            return Err(GenerationError::InvalidTerminal);
-                        }
-                    };
-
-                    content.push(id);
+                Symbol::Terminal(terminal) => {
+                    (grammar, content) = self.handle_terminal(grammar, terminal, content)?;
                 }
-
-                Symbol::Nonterminal(id) => {
-                    let nonterminal = Symbol::Nonterminal(id);
-                    let productions = match self.grammar.productions(nonterminal) {
-                        Ok(productions) => productions,
-                        Err(GrammarError::InvalidSymbol) => {
-                            return Err(GenerationError::InvalidNonterminal);
-                        }
-                    };
-
-                    let selected_index = rand::random_range(0..productions.len());
-                    let selected_production = &productions[selected_index];
-
-                    for next_symbol in selected_production.symbols().iter().rev() {
-                        pending_symbols.push(*next_symbol);
-                    }
+                Symbol::Nonterminal(nonterminal) => {
+                    (grammar, pending_symbols) =
+                        self.handle_nonterminal(grammar, nonterminal, pending_symbols)?;
                 }
             };
         }

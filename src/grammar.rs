@@ -29,8 +29,6 @@ pub trait Grammar {
     fn productions(&self, nonterminal: Nonterminal) -> Result<Vec<Production>, InvalidNonterminal>;
 }
 
-#[derive(Debug)]
 pub struct InvalidTerminal(pub char);
 
-#[derive(Debug)]
 pub struct InvalidNonterminal(pub char);

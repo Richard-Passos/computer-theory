@@ -13,7 +13,13 @@ pub struct Terminal(pub char);
 pub struct Nonterminal(pub char);
 
 impl Terminal {
-    pub fn id(&self) -> char {
+    pub const fn id(&self) -> char {
+        return self.0;
+    }
+}
+
+impl Nonterminal {
+    pub const fn id(&self) -> char {
         return self.0;
     }
 }

@@ -10,7 +10,7 @@ pub trait Grammar {
 }
 
 #[derive(Debug)]
-pub struct InvalidTerminal;
+pub struct InvalidTerminal(pub char);
 
 #[derive(Debug)]
-pub struct InvalidNonterminal;
+pub struct InvalidNonterminal(pub char);

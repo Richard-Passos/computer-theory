@@ -10,8 +10,8 @@ pub trait WordGenerator {
 
 pub enum GenerationError {
     WordTooLong,
-    InvalidTerminal,
-    InvalidNonterminal,
+    InvalidTerminal(char),
+    InvalidNonterminal(char),
 }
 
 /**
@@ -40,15 +40,15 @@ impl<G: Grammar> RandomWordGenerator<G> {
 
         grammar = match grammar.handle(terminal) {
             Ok(grammar) => grammar,
-            Err(_) => {
-                return Err(GenerationError::InvalidTerminal);
+            Err(InvalidTerminal(id)) => {
+                return Err(GenerationError::InvalidTerminal(id));
             }
         };
 
         match grammar.semantic(terminal) {
-            Ok(semantic) => println!("  → {}: {}", terminal.id(), semantic),
-            Err(InvalidTerminal) => {
-                return Err(GenerationError::InvalidTerminal);
+            Ok(semantic) => println!("  → {}", semantic),
+            Err(InvalidTerminal(id)) => {
+                return Err(GenerationError::InvalidTerminal(id));
             }
         };
 
@@ -64,8 +64,8 @@ impl<G: Grammar> RandomWordGenerator<G> {
     ) -> Result<(G, Vec<Symbol>), GenerationError> {
         let productions = match grammar.productions(nonterminal) {
             Ok(productions) => productions,
-            Err(InvalidNonterminal) => {
-                return Err(GenerationError::InvalidNonterminal);
+            Err(InvalidNonterminal(id)) => {
+                return Err(GenerationError::InvalidNonterminal(id));
             }
         };
 

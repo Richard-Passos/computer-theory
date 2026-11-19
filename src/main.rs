@@ -24,11 +24,11 @@ fn main() {
             Err(GenerationError::WordTooLong) => {
                 eprintln!("  → This generation attempt exceeded {MAX_SIZE} characters.");
             }
-            Err(GenerationError::InvalidTerminal) => {
-                eprintln!("  → The word contains an invalid terminal. A developer must fix it.")
+            Err(GenerationError::InvalidTerminal(id)) => {
+                eprintln!("  → Invalid terminal '{}'. A developer must fix it.", id)
             }
-            Err(GenerationError::InvalidNonterminal) => {
-                eprintln!("  → The word contains an invalid nonterminal. A developer must fix it.");
+            Err(GenerationError::InvalidNonterminal(id)) => {
+                eprintln!("  → Invalid nonterminal '{}'. A developer must fix it.", id);
             }
         };
 

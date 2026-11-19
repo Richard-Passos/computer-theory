@@ -58,10 +58,10 @@ impl Grammar for DMCGrammar {
         ));
 
         semantic.push_str(match terminal {
-            Attack => "Strikes the enemy with a basic attack.",
-            Thrust => "Delivers a finishing thrust, may descend one level.",
-            Launch => "Launches himself and the enemy one level higher.",
-            Roll => "Rolls to dodge an attack.",
+            Attack => "Hits the enemy with a basic attack.",
+            Thrust => "Thrusts to descend or end the combo.",
+            Launch => "Launches both fighters up one level.",
+            Roll => "Rolls on the ground to dodge a hit.",
             Taunt => "Taunts the enemy to build style.",
         });
 

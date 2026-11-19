@@ -2,33 +2,35 @@ mod dmc_grammar;
 mod generator;
 mod grammar;
 mod production;
+mod random_generator;
 mod symbol;
 mod word;
 
 use std::io::{self, Write};
 
 use crate::dmc_grammar::DMCGrammar;
-use crate::generator::{GenerationError, MAX_SIZE, RandomWordGenerator, WordGenerator};
+use crate::generator::{GenerationError, WordGenerator};
+use crate::random_generator::RandomWordGenerator;
 
 fn main() {
     let generator = RandomWordGenerator::new(DMCGrammar::new);
 
     let tries = get_tries();
     for i in 1..=tries {
-        println!("Try number {:02}:", i);
+        println!("Try number {i:02}:");
 
         match generator.generate() {
             Ok(word) => {
-                println!("  → Generated word: {}", word.content());
+                println!("  → Generated word: {word}");
             }
-            Err(GenerationError::WordTooLong) => {
-                eprintln!("  → This generation attempt exceeded {MAX_SIZE} characters.");
+            Err(GenerationError::WordTooLong(size)) => {
+                eprintln!("  → This generation attempt exceeded {size} characters.");
             }
             Err(GenerationError::InvalidTerminal(id)) => {
-                eprintln!("  → Invalid terminal '{}'. A developer must fix it.", id)
+                eprintln!("  → Invalid terminal '{id}'. A developer must fix it.")
             }
             Err(GenerationError::InvalidNonterminal(id)) => {
-                eprintln!("  → Invalid nonterminal '{}'. A developer must fix it.", id);
+                eprintln!("  → Invalid nonterminal '{id}'. A developer must fix it.");
             }
         };
 
@@ -51,7 +53,7 @@ fn input(message: &str) -> String {
     let mut input = String::new();
 
     if !message.is_empty() {
-        print!("{}", message);
+        print!("{message}");
     }
 
     io::stdout()
